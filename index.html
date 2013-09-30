@@ -13,6 +13,16 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
+      var light = new THREE.DirectionalLight( 0xffffff, 0.7 );
+      light.position.set( 200, 500, 500 );
+
+      scene.add( light );
+
+      light = new THREE.DirectionalLight( 0xffffff, 0.9 );
+      light.position.set( -200, -100, -400 );
+
+      scene.add( light );
+
       new THREE.JSONLoader().load('teapot.json', function(geometry) {
         var material = new THREE.MeshPhongMaterial({color: 0xFFECA9});
         var mesh = new THREE.Mesh(geometry, material);
