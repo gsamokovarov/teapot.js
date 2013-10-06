@@ -2,10 +2,17 @@
   <head>
     <title>Teapots &amp; Stuff</title>
     <style>canvas { width: 100%; height: 100% }</style>
+    <script src="vendor/three.min.js"></script>
+    <script src="vendor/dat.gui.js"></script>
   </head>
   <body>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r53/three.min.js"></script>
     <script>
+      var config = {
+        spinX: 0,
+        spinY: 0.01,
+        spinZ: 0
+      };
+
       var scene = new THREE.Scene;
       var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -13,15 +20,15 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
-      var light = new THREE.DirectionalLight( 0xffffff, 0.7 );
-      light.position.set( 200, 500, 500 );
+      var light = new THREE.DirectionalLight(0xffffff, 0.7);
+      light.position.set(200, 500, 500);
 
-      scene.add( light );
+      scene.add(light);
 
-      light = new THREE.DirectionalLight( 0xffffff, 0.9 );
-      light.position.set( -200, -100, -400 );
+      light = new THREE.DirectionalLight(0xffffff, 0.9);
+      light.position.set(-200, -100, -400);
 
-      scene.add( light );
+      scene.add(light);
 
       new THREE.JSONLoader().load('teapot.json', function(geometry) {
         var material = new THREE.MeshPhongMaterial({color: 0xFFECA9});
@@ -32,10 +39,18 @@
         camera.position.z = 6;
         camera.position.y = 1;
 
+        var gui = new dat.GUI;
+
+        gui.add(config, 'spinX', 0, 0.1);
+        gui.add(config, 'spinY', 0, 0.1);
+        gui.add(config, 'spinZ', 0, 0.1);
+
         var render = function() {
           requestAnimationFrame(render);
 
-          mesh.rotation.y += 0.01;
+          if (config.spinX) mesh.rotation.x += config.spinX;
+          if (config.spinY) mesh.rotation.y += config.spinY;
+          if (config.spinZ) mesh.rotation.z += config.spinZ;
 
           renderer.render(scene, camera);
         };
